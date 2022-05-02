@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Task } from "./task.model";
 import { Model } from "mongoose";
+import { User } from "src/auth/auth.model";
 
 function getDatesInRange(startDate, endDate) {
   const date = new Date(startDate);
@@ -18,24 +19,35 @@ function getDatesInRange(startDate, endDate) {
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel("Task") private taskModel: Model<Task>) {}
+  constructor(
+    @InjectModel("Task") private taskModel: Model<Task>,
+    @InjectModel("User") private userModel: Model<User & Document>
+  ) {}
 
   getHello(): string {
     return Date();
   }
 
   async create(data: any) {
+    const user = await this.userModel.findById(data.user);
+    console.log("user", user);
+    console.log(data);
     const newTask = new this.taskModel(data);
-    const result = await newTask.save();
-    return result.id;
+    user.tasks.push(newTask);
+    console.log("user", user);
+    console.log(newTask);
+    await newTask.save();
+    await user.save();
+    return newTask;
   }
 
-  async getAllTasks() {
-    const tasks = await this.taskModel.find().exec();
-    return tasks.map((task) => ({
-      id: task.id,
-      name: task.name,
-      description: task.description,
+  async getAllTasks(userId: string) {
+    const user = await this.userModel.findById(userId).exec();
+    const populatedUser = await user.populate("tasks");
+    return populatedUser.tasks.map((task: any) => ({
+      id: task._id,
+      name: task?.name,
+      description: task?.description,
       status: task.status,
       startDate: task.startDate.toLocaleDateString(),
       endDate: task.endDate.toLocaleDateString(),
@@ -109,11 +121,23 @@ export class TaskService {
     updatedTask.save();
   }
 
-  async deleteTask(taskId: string) {
+  async deleteTask(userId: string, taskId: string) {
+    // const result = await this.taskModel.deleteOne({ _id: taskId }).exec();
+    // if (!result.deletedCount) {
+    //   throw new NotFoundException("Could not find task.");
+    // }
+
+    const user = await this.userModel.findById(userId);
+    const usersTask = user.tasks;
+    const index = user.tasks.indexOf(`${taskId}`);
+    if (index > -1) {
+      usersTask.splice(index, 1); // 2nd parameter means remove one item only
+    }
     const result = await this.taskModel.deleteOne({ _id: taskId }).exec();
     if (!result.deletedCount) {
       throw new NotFoundException("Could not find task.");
     }
+    return user.save();
   }
 
   private async findTask(id: string): Promise<Task> {

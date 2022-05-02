@@ -48,8 +48,8 @@ let NotesService = class NotesService {
     getAllNotes(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userModel.findById(userId);
-            const notes = yield user.populate("notes");
-            return notes.notes;
+            const populatedUser = yield user.populate("notes");
+            return populatedUser.notes;
         });
     }
     getSingleNote(noteId) {
@@ -78,14 +78,10 @@ let NotesService = class NotesService {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userModel.findById(userId);
             const usersNote = user.notes;
-            console.log(user);
-            console.log(noteId);
             const index = user.notes.indexOf(`${noteId}`);
-            console.log(index);
             if (index > -1) {
                 usersNote.splice(index, 1);
             }
-            console.log(user);
             const result = yield this.noteModel.deleteOne({ _id: noteId }).exec();
             if (!result.deletedCount) {
                 throw new common_1.NotFoundException("Could not find note.");

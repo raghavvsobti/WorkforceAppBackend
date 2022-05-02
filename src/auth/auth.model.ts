@@ -18,6 +18,12 @@ export const UserSchema = new mongoose.Schema({
       ref: "Note",
     },
   ],
+  tasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
 });
 
 export class User {
@@ -32,5 +38,6 @@ export class User {
   @IsString()
   @IsMongoId()
   notes: Array<{}>;
+  tasks: Array<{}>;
   role: string;
 }

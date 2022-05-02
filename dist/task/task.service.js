@@ -35,26 +35,35 @@ function getDatesInRange(startDate, endDate) {
     return dates;
 }
 let TaskService = class TaskService {
-    constructor(taskModel) {
+    constructor(taskModel, userModel) {
         this.taskModel = taskModel;
+        this.userModel = userModel;
     }
     getHello() {
         return Date();
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userModel.findById(data.user);
+            console.log("user", user);
+            console.log(data);
             const newTask = new this.taskModel(data);
-            const result = yield newTask.save();
-            return result.id;
+            user.tasks.push(newTask);
+            console.log("user", user);
+            console.log(newTask);
+            yield newTask.save();
+            yield user.save();
+            return newTask;
         });
     }
-    getAllTasks() {
+    getAllTasks(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tasks = yield this.taskModel.find().exec();
-            return tasks.map((task) => ({
-                id: task.id,
-                name: task.name,
-                description: task.description,
+            const user = yield this.userModel.findById(userId).exec();
+            const populatedUser = yield user.populate("tasks");
+            return populatedUser.tasks.map((task) => ({
+                id: task._id,
+                name: task === null || task === void 0 ? void 0 : task.name,
+                description: task === null || task === void 0 ? void 0 : task.description,
                 status: task.status,
                 startDate: task.startDate.toLocaleDateString(),
                 endDate: task.endDate.toLocaleDateString(),
@@ -111,12 +120,19 @@ let TaskService = class TaskService {
             updatedTask.save();
         });
     }
-    deleteTask(taskId) {
+    deleteTask(userId, taskId) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userModel.findById(userId);
+            const usersTask = user.tasks;
+            const index = user.tasks.indexOf(`${taskId}`);
+            if (index > -1) {
+                usersTask.splice(index, 1);
+            }
             const result = yield this.taskModel.deleteOne({ _id: taskId }).exec();
             if (!result.deletedCount) {
                 throw new common_1.NotFoundException("Could not find task.");
             }
+            return user.save();
         });
     }
     findTask(id) {
@@ -138,7 +154,9 @@ let TaskService = class TaskService {
 TaskService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)("Task")),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)("User")),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model])
 ], TaskService);
 exports.TaskService = TaskService;
 //# sourceMappingURL=task.service.js.map

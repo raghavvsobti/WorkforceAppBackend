@@ -28,8 +28,8 @@ export class NotesService {
 
   async getAllNotes(userId: string) {
     const user = await this.userModel.findById(userId);
-    const notes = await user.populate("notes");
-    return notes.notes;
+    const populatedUser = await user.populate("notes");
+    return populatedUser.notes;
     // const notes = await this.noteModel.find().exec();
     // return notes.map((note) => ({
     //   id: note.id,
@@ -62,20 +62,14 @@ export class NotesService {
   async deleteNote(userId: string, noteId: string) {
     const user = await this.userModel.findById(userId);
     const usersNote = user.notes;
-    console.log(user);
-    console.log(noteId);
     const index = user.notes.indexOf(`${noteId}`);
-    console.log(index);
     if (index > -1) {
       usersNote.splice(index, 1); // 2nd parameter means remove one item only
     }
-
-    console.log(user);
     const result = await this.noteModel.deleteOne({ _id: noteId }).exec();
     if (!result.deletedCount) {
       throw new NotFoundException("Could not find note.");
     }
-
     return user.save();
   }
 

@@ -28,6 +28,12 @@ exports.UserSchema = new mongoose.Schema({
             ref: "Note",
         },
     ],
+    tasks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Task",
+        },
+    ],
 });
 class User {
 }

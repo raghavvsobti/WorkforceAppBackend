@@ -58,27 +58,29 @@ export class TaskController {
     @Body("endDate") endDate: Date,
     @Body("status") status: string,
     @Body("empName") empName: string,
-    @Body("color") color: string
+    @Body("color") color: string,
+    @Body("userId") userId: string
   ) {
     const workingDays = getDatesInRange(new Date(startDate), new Date(endDate));
 
     const task = await this.taskService.create({
-      name,
-      empName,
+      name: name,
+      empName: empName,
       description: description,
       status: status,
       startDate: startDate,
       endDate: endDate,
       workingDays: workingDays,
       color: color,
+      user: userId,
     });
 
     return task;
   }
 
-  @Get("all")
-  async getAllTasks() {
-    const tasks = await this.taskService.getAllTasks();
+  @Get("all/:userId")
+  async getAllTasks(@Param("userId") userId: string) {
+    const tasks = await this.taskService.getAllTasks(userId);
     return tasks;
   }
 
@@ -113,10 +115,12 @@ export class TaskController {
     return null;
   }
 
-  @Delete(":id")
-  async removeTask(@Param("id") taskId: string) {
-    await this.taskService.deleteTask(taskId);
+  @Delete(":userId/:id")
+  async removeTask(
+    @Param("id") taskId: string,
+    @Param("userId") userId: string
+  ) {
+    await this.taskService.deleteTask(userId, taskId);
     return null;
   }
-  D;
 }

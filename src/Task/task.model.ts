@@ -10,6 +10,7 @@ export const TaskSchema = new mongoose.Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     workingDays: { type: Array },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {
     timestamps: true,
@@ -26,4 +27,5 @@ export interface Task extends mongoose.Document {
   startDate: Date;
   endDate: Date;
   workingDays: Date[];
+  user: mongoose.Schema.Types.ObjectId;
 }

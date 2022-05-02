@@ -58,25 +58,26 @@ let TaskController = class TaskController {
     getHello() {
         return this.taskService.getHello();
     }
-    create(name, description, startDate, endDate, status, empName, color) {
+    create(name, description, startDate, endDate, status, empName, color, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const workingDays = getDatesInRange(new Date(startDate), new Date(endDate));
             const task = yield this.taskService.create({
-                name,
-                empName,
+                name: name,
+                empName: empName,
                 description: description,
                 status: status,
                 startDate: startDate,
                 endDate: endDate,
                 workingDays: workingDays,
                 color: color,
+                user: userId,
             });
             return task;
         });
     }
-    getAllTasks() {
+    getAllTasks(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tasks = yield this.taskService.getAllTasks();
+            const tasks = yield this.taskService.getAllTasks(userId);
             return tasks;
         });
     }
@@ -89,9 +90,9 @@ let TaskController = class TaskController {
             return null;
         });
     }
-    removeTask(taskId) {
+    removeTask(taskId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.taskService.deleteTask(taskId);
+            yield this.taskService.deleteTask(userId, taskId);
             return null;
         });
     }
@@ -111,15 +112,17 @@ __decorate([
     __param(4, (0, common_4.Body)("status")),
     __param(5, (0, common_4.Body)("empName")),
     __param(6, (0, common_4.Body)("color")),
+    __param(7, (0, common_4.Body)("userId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Date,
-        Date, String, String, String]),
+        Date, String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], TaskController.prototype, "create", null);
 __decorate([
-    (0, common_4.Get)("all"),
+    (0, common_4.Get)("all/:userId"),
+    __param(0, (0, common_1.Param)("userId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TaskController.prototype, "getAllTasks", null);
 __decorate([
@@ -145,10 +148,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TaskController.prototype, "updateTask", null);
 __decorate([
-    (0, common_3.Delete)(":id"),
+    (0, common_3.Delete)(":userId/:id"),
     __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Param)("userId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], TaskController.prototype, "removeTask", null);
 TaskController = __decorate([

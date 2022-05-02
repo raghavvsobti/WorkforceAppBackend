@@ -10,4 +10,5 @@ export interface Task extends mongoose.Document {
     startDate: Date;
     endDate: Date;
     workingDays: Date[];
+    user: mongoose.Schema.Types.ObjectId;
 }

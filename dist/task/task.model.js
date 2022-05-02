@@ -11,6 +11,7 @@ exports.TaskSchema = new mongoose.Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     workingDays: { type: Array },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 }, {
     timestamps: true,
 });

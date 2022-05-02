@@ -37,7 +37,8 @@ export class NotesController {
   }
 
   @Get("all/:userId")
-  async getAllNotes(@Param("userId") userId: string) {
+  async getAllNotes(@Param("userId") userId: string)
+  {
     const notes = await this.noteService.getAllNotes(userId);
     return notes;
   }
