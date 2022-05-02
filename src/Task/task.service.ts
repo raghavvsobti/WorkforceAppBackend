@@ -41,6 +41,7 @@ export class TaskService {
       endDate: task.endDate.toLocaleDateString(),
       empName: task.empName,
       workingDays: task.workingDays,
+      color: task.color,
     }));
   }
 
@@ -55,6 +56,7 @@ export class TaskService {
       endDate: task.endDate,
       empName: task.empName,
       workingDays: task.workingDays,
+      color: task.color,
     };
   }
 
@@ -66,7 +68,8 @@ export class TaskService {
     endDate: Date,
     status: string,
     empName: string,
-    workingDays: Date[]
+    workingDays: Date[],
+    color: string
   ) {
     console.log(startDate, endDate, workingDays);
     const updatedTask = await this.findTask(taskId);
@@ -96,6 +99,9 @@ export class TaskService {
     }
     if (empName) {
       updatedTask.empName = empName;
+    }
+    if (color) {
+      updatedTask.color = color;
     }
 
     console.log(updatedTask.workingDays);

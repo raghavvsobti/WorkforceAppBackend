@@ -13,14 +13,16 @@ const auth_model_1 = require("./auth.model");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const jwt_1 = require("@nestjs/jwt");
+const constants_1 = require("../constants");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: auth_model_1.UserSchema }]),
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: "User", schema: auth_model_1.UserSchema }]),
             jwt_1.JwtModule.register({
-                secret: 'secret',
-                signOptions: { expiresIn: '1d' },
+                secret: constants_1.JWT_SECRET,
+                signOptions: { expiresIn: "1d" },
             }),
         ],
         controllers: [auth_controller_1.AuthController],

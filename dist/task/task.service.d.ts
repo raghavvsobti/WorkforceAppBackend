@@ -14,6 +14,7 @@ export declare class TaskService {
         endDate: string;
         empName: string;
         workingDays: Date[];
+        color: string;
     }[]>;
     getSingleTask(taskId: string): Promise<{
         id: string;
@@ -24,8 +25,9 @@ export declare class TaskService {
         endDate: Date;
         empName: string;
         workingDays: Date[];
+        color: string;
     }>;
-    updateTask(taskId: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, workingDays: Date[]): Promise<void>;
+    updateTask(taskId: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, workingDays: Date[], color: string): Promise<void>;
     deleteTask(taskId: string): Promise<void>;
     private findTask;
 }

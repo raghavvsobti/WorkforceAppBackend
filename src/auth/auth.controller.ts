@@ -77,7 +77,7 @@ export class AuthController {
       }
 
       const user = await this.authService.findOne({ id: data["id"] });
-      const { name, email, notes } = user;
+      const { name, email } = user;
       // const userData = { name, email, notes };
       return user;
     } catch (error) {

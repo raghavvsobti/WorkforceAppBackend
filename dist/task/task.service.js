@@ -60,6 +60,7 @@ let TaskService = class TaskService {
                 endDate: task.endDate.toLocaleDateString(),
                 empName: task.empName,
                 workingDays: task.workingDays,
+                color: task.color,
             }));
         });
     }
@@ -75,10 +76,11 @@ let TaskService = class TaskService {
                 endDate: task.endDate,
                 empName: task.empName,
                 workingDays: task.workingDays,
+                color: task.color,
             };
         });
     }
-    updateTask(taskId, name, description, startDate, endDate, status, empName, workingDays) {
+    updateTask(taskId, name, description, startDate, endDate, status, empName, workingDays, color) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(startDate, endDate, workingDays);
             const updatedTask = yield this.findTask(taskId);
@@ -101,6 +103,9 @@ let TaskService = class TaskService {
             }
             if (empName) {
                 updatedTask.empName = empName;
+            }
+            if (color) {
+                updatedTask.color = color;
             }
             console.log(updatedTask.workingDays);
             updatedTask.save();

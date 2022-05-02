@@ -1,7 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthenticationGuard } from "dist/guards/authentication.guard";
 import { NotesService } from "./notes.service";
 
 @Controller("note")
+@UseGuards(AuthenticationGuard)
 export class NotesController {
   constructor(private readonly noteService: NotesService) {}
 

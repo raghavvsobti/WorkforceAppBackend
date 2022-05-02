@@ -13,20 +13,28 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_model_1 = require("./auth/auth.model");
 const auth_module_1 = require("./auth/auth.module");
+const constants_1 = require("./constants");
+const get_user_middleware_1 = require("./middlewares/get-user.middleware");
 const notes_controller_1 = require("./notes/notes.controller");
 const notes_model_1 = require("./notes/notes.model");
 const notes_module_1 = require("./notes/notes.module");
 const notes_service_1 = require("./notes/notes.service");
+const task_controller_1 = require("./Task/task.controller");
 const task_model_1 = require("./Task/task.model");
 const task_module_1 = require("./Task/task.module");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer
+            .apply(get_user_middleware_1.GetUserMiddleware)
+            .forRoutes(notes_controller_1.NotesController, task_controller_1.TaskController);
+    }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             task_module_1.TaskModule,
             auth_module_1.AuthModule,
-            mongoose_1.MongooseModule.forRoot("mongodb+srv://raghav:password1234@cluster0.zw0t1.mongodb.net/nestAPi?retryWrites=true&w=majority"),
+            mongoose_1.MongooseModule.forRoot(constants_1.MONGO_CONNECTION),
             mongoose_1.MongooseModule.forFeature([{ name: "User", schema: auth_model_1.UserSchema }]),
             mongoose_1.MongooseModule.forFeature([{ name: "Task", schema: task_model_1.TaskSchema }]),
             mongoose_1.MongooseModule.forFeature([{ name: "Note", schema: notes_model_1.NoteSchema }]),

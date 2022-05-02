@@ -71,7 +71,7 @@ let AuthController = class AuthController {
                     throw new common_1.UnauthorizedException();
                 }
                 const user = yield this.authService.findOne({ id: data["id"] });
-                const { name, email, notes } = user;
+                const { name, email } = user;
                 return user;
             }
             catch (error) {

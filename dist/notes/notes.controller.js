@@ -23,6 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotesController = void 0;
 const common_1 = require("@nestjs/common");
+const authentication_guard_1 = require("../../dist/guards/authentication.guard");
 const notes_service_1 = require("./notes.service");
 let NotesController = class NotesController {
     constructor(noteService) {
@@ -107,6 +108,7 @@ __decorate([
 ], NotesController.prototype, "removeNote", null);
 NotesController = __decorate([
     (0, common_1.Controller)("note"),
+    (0, common_1.UseGuards)(authentication_guard_1.AuthenticationGuard),
     __metadata("design:paramtypes", [notes_service_1.NotesService])
 ], NotesController);
 exports.NotesController = NotesController;

@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 
 export const TaskSchema = new mongoose.Schema(
   {
+    color: { type: String, default: "green-200" },
     name: { type: String, required: true },
     empName: { type: String, required: true },
     description: { type: String, required: true },
@@ -17,6 +18,7 @@ export const TaskSchema = new mongoose.Schema(
 
 export interface Task extends mongoose.Document {
   id: string;
+  color: string;
   name: string;
   empName: string;
   description: string;

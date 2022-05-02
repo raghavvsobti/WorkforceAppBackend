@@ -1,6 +1,8 @@
 import { Param, Patch } from "@nestjs/common";
+import { UseGuards } from "@nestjs/common";
 import { Delete } from "@nestjs/common";
 import { Body, Controller, Get, Post } from "@nestjs/common";
+import { AuthenticationGuard } from "dist/guards/authentication.guard";
 import { TaskService } from "./task.service";
 // import { getDatesInRange } from "src/Task/utils.js";
 
@@ -39,6 +41,7 @@ function getFormat(today) {
 console.log(getDatesInRange(new Date("2022-04-27"), new Date("2022-04-29")));
 
 @Controller("task")
+@UseGuards(AuthenticationGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
@@ -54,7 +57,8 @@ export class TaskController {
     @Body("startDate") startDate: Date,
     @Body("endDate") endDate: Date,
     @Body("status") status: string,
-    @Body("empName") empName: string
+    @Body("empName") empName: string,
+    @Body("color") color: string
   ) {
     const workingDays = getDatesInRange(new Date(startDate), new Date(endDate));
 
@@ -66,6 +70,7 @@ export class TaskController {
       startDate: startDate,
       endDate: endDate,
       workingDays: workingDays,
+      color: color,
     });
 
     return task;
@@ -91,6 +96,7 @@ export class TaskController {
     @Body("endDate") endDate: Date,
     @Body("status") status: string,
     @Body("empName") empName: string,
+    @Body("color") color: string,
     workingDays: Date[]
   ) {
     await this.taskService.updateTask(
@@ -101,7 +107,8 @@ export class TaskController {
       endDate,
       status,
       empName,
-      workingDays
+      workingDays,
+      color
     );
     return null;
   }

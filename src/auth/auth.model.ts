@@ -1,4 +1,5 @@
 // import { Schema } from "@nestjs/mongoose";
+import { IsEmail, IsMongoId, IsString } from "class-validator";
 import * as mongoose from "mongoose";
 
 export const UserSchema = new mongoose.Schema({
@@ -13,10 +14,17 @@ export const UserSchema = new mongoose.Schema({
   ],
 });
 
-export interface User extends mongoose.Document {
+export class User {
+  @IsString()
+  @IsMongoId()
   id: string;
+  @IsString()
   name: string;
+  @IsEmail()
   email: string;
   password: string;
-  notes: [];
+
+  @IsString()
+  @IsMongoId()
+  notesId: string;
 }

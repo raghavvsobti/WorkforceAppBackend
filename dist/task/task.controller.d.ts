@@ -3,7 +3,7 @@ export declare class TaskController {
     private readonly taskService;
     constructor(taskService: TaskService);
     getHello(): string;
-    create(name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string): Promise<string>;
+    create(name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, color: string): Promise<string>;
     getAllTasks(): Promise<{
         id: string;
         name: string;
@@ -13,6 +13,7 @@ export declare class TaskController {
         endDate: string;
         empName: string;
         workingDays: Date[];
+        color: string;
     }[]>;
     getTask(taskId: string): Promise<{
         id: string;
@@ -23,8 +24,9 @@ export declare class TaskController {
         endDate: Date;
         empName: string;
         workingDays: Date[];
+        color: string;
     }>;
-    updateTask(taskid: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, workingDays: Date[]): Promise<any>;
+    updateTask(taskid: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, color: string, workingDays: Date[]): Promise<any>;
     removeTask(taskId: string): Promise<any>;
     D: any;
 }
