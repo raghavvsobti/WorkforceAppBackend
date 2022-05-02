@@ -12,7 +12,6 @@ import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { JwtService } from "@nestjs/jwt";
-import { AuthCredentialsDto } from "src/dto/auth-credentials.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -28,7 +27,6 @@ export class AuthController {
 
   @Post("register")
   async register(
-    // authCredentialsDto: AuthCredentialsDto,
     @Body("name") name: string,
     @Body("email") email: string,
     @Body("password") password: string
