@@ -5,5 +5,6 @@ export declare class User {
     name: string;
     email: string;
     password: string;
-    notesId: string;
+    notes: Array<{}>;
+    role: string;
 }

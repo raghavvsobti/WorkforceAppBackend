@@ -26,7 +26,7 @@ const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
 const common_3 = require("@nestjs/common");
 const common_4 = require("@nestjs/common");
-const authentication_guard_1 = require("../../dist/guards/authentication.guard");
+const authentication_guard_1 = require("../guards/authentication.guard");
 const task_service_1 = require("./task.service");
 function getDatesInRange(startDate, endDate) {
     const date = new Date(startDate);

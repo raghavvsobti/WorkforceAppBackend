@@ -6,6 +6,12 @@ export const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  role: {
+    type: String,
+    lowercase: true,
+    enum: ["user", "superadmin", "admin"],
+    default: "user",
+  },
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,8 +29,8 @@ export class User {
   @IsEmail()
   email: string;
   password: string;
-
   @IsString()
   @IsMongoId()
-  notesId: string;
+  notes: Array<{}>;
+  role: string;
 }

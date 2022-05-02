@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { AuthenticationGuard } from "dist/guards/authentication.guard";
+import { AuthenticationGuard } from "../guards/authentication.guard";
 import { NotesService } from "./notes.service";
 
 @Controller("note")
@@ -24,19 +24,21 @@ export class NotesController {
   @Post("create")
   async create(
     @Body("title") title: string,
-    @Body("description") description: string
+    @Body("description") description: string,
+    @Body("userId") userId: string
   ) {
     const note = await this.noteService.create({
       title,
       description: description,
+      user: userId,
     });
 
     return note;
   }
 
-  @Get("all")
-  async getAllNotes() {
-    const notes = await this.noteService.getAllNotes();
+  @Get("all/:userId")
+  async getAllNotes(@Param("userId") userId: string) {
+    const notes = await this.noteService.getAllNotes(userId);
     return notes;
   }
 
@@ -55,9 +57,12 @@ export class NotesController {
     return null;
   }
 
-  @Delete(":id")
-  async removeNote(@Param("id") noteId: string) {
-    await this.noteService.deleteNote(noteId);
+  @Delete(":userId/:id")
+  async removeNote(
+    @Param("id") noteId: string,
+    @Param("userId") userId: string
+  ) {
+    await this.noteService.deleteNote(userId, noteId);
     return null;
   }
 }

@@ -34,13 +34,14 @@ let AuthController = class AuthController {
     getHello() {
         return this.authService.getHello();
     }
-    register(name, email, password) {
+    register(name, email, password, role) {
         return __awaiter(this, void 0, void 0, function* () {
             const hashedPassword = yield bcrypt.hash(password, 12);
             const user = yield this.authService.create({
                 name: name,
                 email: email,
                 password: hashedPassword,
+                role: role,
             });
             return user;
         });
@@ -97,8 +98,9 @@ __decorate([
     __param(0, (0, common_1.Body)("name")),
     __param(1, (0, common_1.Body)("email")),
     __param(2, (0, common_1.Body)("password")),
+    __param(3, (0, common_1.Body)("role")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([

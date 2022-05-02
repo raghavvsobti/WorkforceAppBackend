@@ -1,6 +1,10 @@
+import { InjectModel } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
+import { User, UserSchema } from "../auth/auth.model";
 
 export const NoteSchema = new mongoose.Schema({
+  // constructor(@InjectModel("User") private userModel: mongoose.Model<User & mongoose.Document>){}
+
   title: { type: String, required: true },
   description: { type: String, required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -12,3 +16,9 @@ export interface Note extends mongoose.Document {
   description: string;
   user: mongoose.Schema.Types.ObjectId;
 }
+
+// NoteSchema.post("deleteOne", async function (note) {
+//   if (note.user.length > 0) {
+//     const res = await User.deleteMany({});
+//   }
+// });

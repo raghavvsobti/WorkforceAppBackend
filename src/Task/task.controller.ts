@@ -2,7 +2,7 @@ import { Param, Patch } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common";
 import { Delete } from "@nestjs/common";
 import { Body, Controller, Get, Post } from "@nestjs/common";
-import { AuthenticationGuard } from "dist/guards/authentication.guard";
+import { AuthenticationGuard } from "../guards/authentication.guard";
 import { TaskService } from "./task.service";
 // import { getDatesInRange } from "src/Task/utils.js";
 

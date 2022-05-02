@@ -26,27 +26,30 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 let NotesService = class NotesService {
-    constructor(noteModel) {
+    constructor(noteModel, userModel) {
         this.noteModel = noteModel;
+        this.userModel = userModel;
     }
     getHello() {
         return Date();
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userModel.findById(data.user);
             const newNote = new this.noteModel(data);
-            const result = yield newNote.save();
-            return result.id;
+            user.notes.push(newNote);
+            console.log("user", user);
+            console.log(newNote);
+            yield newNote.save();
+            yield user.save();
+            return newNote;
         });
     }
-    getAllNotes() {
+    getAllNotes(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const notes = yield this.noteModel.find().exec();
-            return notes.map((prod) => ({
-                id: prod.id,
-                title: prod.title,
-                description: prod.description,
-            }));
+            const user = yield this.userModel.findById(userId);
+            const notes = yield user.populate("notes");
+            return notes.notes;
         });
     }
     getSingleNote(noteId) {
@@ -71,12 +74,23 @@ let NotesService = class NotesService {
             updatedNote.save();
         });
     }
-    deleteNote(noteId) {
+    deleteNote(userId, noteId) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userModel.findById(userId);
+            const usersNote = user.notes;
+            console.log(user);
+            console.log(noteId);
+            const index = user.notes.indexOf(`${noteId}`);
+            console.log(index);
+            if (index > -1) {
+                usersNote.splice(index, 1);
+            }
+            console.log(user);
             const result = yield this.noteModel.deleteOne({ _id: noteId }).exec();
             if (!result.deletedCount) {
                 throw new common_1.NotFoundException("Could not find note.");
             }
+            return user.save();
         });
     }
     findNote(id) {
@@ -98,7 +112,9 @@ let NotesService = class NotesService {
 NotesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)("Note")),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)("User")),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model])
 ], NotesService);
 exports.NotesService = NotesService;
 //# sourceMappingURL=notes.service.js.map

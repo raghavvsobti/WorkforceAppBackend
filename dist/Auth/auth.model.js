@@ -16,6 +16,12 @@ exports.UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    role: {
+        type: String,
+        lowercase: true,
+        enum: ["user", "superadmin", "admin"],
+        default: "user",
+    },
     notes: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -41,7 +47,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsMongoId)(),
-    __metadata("design:type", String)
-], User.prototype, "notesId", void 0);
+    __metadata("design:type", Array)
+], User.prototype, "notes", void 0);
 exports.User = User;
 //# sourceMappingURL=auth.model.js.map

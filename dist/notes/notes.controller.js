@@ -23,7 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotesController = void 0;
 const common_1 = require("@nestjs/common");
-const authentication_guard_1 = require("../../dist/guards/authentication.guard");
+const authentication_guard_1 = require("../guards/authentication.guard");
 const notes_service_1 = require("./notes.service");
 let NotesController = class NotesController {
     constructor(noteService) {
@@ -32,18 +32,19 @@ let NotesController = class NotesController {
     getHello() {
         return this.noteService.getHello();
     }
-    create(title, description) {
+    create(title, description, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const note = yield this.noteService.create({
                 title,
                 description: description,
+                user: userId,
             });
             return note;
         });
     }
-    getAllNotes() {
+    getAllNotes(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const notes = yield this.noteService.getAllNotes();
+            const notes = yield this.noteService.getAllNotes(userId);
             return notes;
         });
     }
@@ -56,9 +57,9 @@ let NotesController = class NotesController {
             return null;
         });
     }
-    removeNote(noteId) {
+    removeNote(noteId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.noteService.deleteNote(noteId);
+            yield this.noteService.deleteNote(userId, noteId);
             return null;
         });
     }
@@ -73,14 +74,16 @@ __decorate([
     (0, common_1.Post)("create"),
     __param(0, (0, common_1.Body)("title")),
     __param(1, (0, common_1.Body)("description")),
+    __param(2, (0, common_1.Body)("userId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)("all"),
+    (0, common_1.Get)("all/:userId"),
+    __param(0, (0, common_1.Param)("userId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "getAllNotes", null);
 __decorate([
@@ -100,10 +103,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "updateNote", null);
 __decorate([
-    (0, common_1.Delete)(":id"),
+    (0, common_1.Delete)(":userId/:id"),
     __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Param)("userId")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], NotesController.prototype, "removeNote", null);
 NotesController = __decorate([

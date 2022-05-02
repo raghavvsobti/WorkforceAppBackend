@@ -29,13 +29,15 @@ export class AuthController {
   async register(
     @Body("name") name: string,
     @Body("email") email: string,
-    @Body("password") password: string
+    @Body("password") password: string,
+    @Body("role") role: string
   ) {
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await this.authService.create({
       name: name,
       email: email,
       password: hashedPassword,
+      role: role,
     });
 
     return user;

@@ -15,7 +15,7 @@ export declare class AuthController {
     private jwtService;
     constructor(authService: AuthService, jwtService: JwtService);
     getHello(): string;
-    register(name: string, email: string, password: string): Promise<any>;
+    register(name: string, email: string, password: string, role: string): Promise<any>;
     login(email: string, password: string, response: Response): Promise<{
         message: string;
         user: import("./auth.model").User & import("mongoose").Document<any, any, any> & {
