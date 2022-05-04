@@ -34,6 +34,12 @@ exports.UserSchema = new mongoose.Schema({
             ref: "Task",
         },
     ],
+    members: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
 });
 class User {
 }

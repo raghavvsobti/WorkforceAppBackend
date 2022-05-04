@@ -24,7 +24,22 @@ export class AuthService {
     return this.userModel.findOne(condition);
   }
 
-  getHello(): string {
-    return Date();
+  async createMember(data: any) {
+    // const { name, password, email } = data;
+    console.log(data);
+    const newUser = new this.userModel(data);
+    const user = await this.userModel.findById(data.createdBy);
+    user.members.push(newUser);
+    console.log("user", user);
+    console.log(newUser);
+    await newUser.save();
+    await user.save();
+    return newUser;
+  }
+
+  async getAllMembers(userId: string) {
+    const user = await this.userModel.findById(userId);
+    const populatedUser = await user.populate("members");
+    return populatedUser.members;
   }
 }

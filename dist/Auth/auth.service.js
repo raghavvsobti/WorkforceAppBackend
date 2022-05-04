@@ -44,8 +44,25 @@ let AuthService = class AuthService {
             return this.userModel.findOne(condition);
         });
     }
-    getHello() {
-        return Date();
+    createMember(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(data);
+            const newUser = new this.userModel(data);
+            const user = yield this.userModel.findById(data.createdBy);
+            user.members.push(newUser);
+            console.log("user", user);
+            console.log(newUser);
+            yield newUser.save();
+            yield user.save();
+            return newUser;
+        });
+    }
+    getAllMembers(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userModel.findById(userId);
+            const populatedUser = yield user.populate("members");
+            return populatedUser.members;
+        });
     }
 };
 AuthService = __decorate([

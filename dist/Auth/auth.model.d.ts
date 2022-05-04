@@ -7,5 +7,6 @@ export declare class User {
     password: string;
     notes: Array<{}>;
     tasks: Array<{}>;
+    members: Array<{}>;
     role: string;
 }

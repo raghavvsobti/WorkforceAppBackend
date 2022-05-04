@@ -9,5 +9,8 @@ export declare class AuthService {
     findOne(condition: any): Promise<User & Document<any, any, any> & {
         _id: any;
     }>;
-    getHello(): string;
+    createMember(data: any): Promise<User & Document<any, any, any> & {
+        _id: any;
+    }>;
+    getAllMembers(userId: string): Promise<{}[]>;
 }

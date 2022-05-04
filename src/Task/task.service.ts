@@ -43,7 +43,7 @@ export class TaskService {
 
   async getAllTasks(userId: string) {
     const user = await this.userModel.findById(userId).exec();
-    if (user.role === "admin") {
+    if (user.role === "superadmin") {
       const tasks = await this.taskModel.find().exec();
       return tasks.map((task) => ({
         id: task._id,

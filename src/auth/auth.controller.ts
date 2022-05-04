@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
   Res,
@@ -20,11 +21,6 @@ export class AuthController {
     private jwtService: JwtService
   ) {}
 
-  @Get()
-  getHello(): string {
-    return this.authService.getHello();
-  }
-
   @Post("register")
   async register(
     @Body("name") name: string,
@@ -38,6 +34,26 @@ export class AuthController {
       email: email,
       password: hashedPassword,
       role: role,
+    });
+
+    return user;
+  }
+
+  @Post("create-member")
+  async createMember(
+    @Body("name") name: string,
+    @Body("email") email: string,
+    @Body("password") password: string,
+    @Body("role") role: string,
+    @Body("createdBy") createdBy: string
+  ) {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = await this.authService.createMember({
+      name: name,
+      email: email,
+      password: hashedPassword,
+      role: role,
+      createdBy: createdBy,
     });
 
     return user;
@@ -83,6 +99,12 @@ export class AuthController {
     } catch (error) {
       throw new UnauthorizedException();
     }
+  }
+
+  @Get(":userId/members")
+  async getAllMembers(@Param("userId") userId: string) {
+    const members = await this.authService.getAllMembers(userId);
+    return members;
   }
 
   @Post("logout")

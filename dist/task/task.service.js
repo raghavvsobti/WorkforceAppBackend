@@ -59,7 +59,7 @@ let TaskService = class TaskService {
     getAllTasks(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userModel.findById(userId).exec();
-            if (user.role === "admin") {
+            if (user.role === "superadmin") {
                 const tasks = yield this.taskModel.find().exec();
                 return tasks.map((task) => ({
                     id: task._id,

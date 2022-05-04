@@ -24,6 +24,12 @@ export const UserSchema = new mongoose.Schema({
       ref: "Task",
     },
   ],
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 export class User {
@@ -39,5 +45,6 @@ export class User {
   @IsMongoId()
   notes: Array<{}>;
   tasks: Array<{}>;
+  members: Array<{}>;
   role: string;
 }
