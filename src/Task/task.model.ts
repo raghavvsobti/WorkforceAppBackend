@@ -4,7 +4,7 @@ export const TaskSchema = new mongoose.Schema(
   {
     color: { type: String, default: "green-200" },
     name: { type: String, required: true },
-    empName: { type: String, required: true },
+    empName: { type: Array, required: true },
     description: { type: String, required: true },
     status: { type: String, required: true },
     startDate: { type: Date, required: true },
@@ -21,7 +21,7 @@ export interface Task extends mongoose.Document {
   id: string;
   color: string;
   name: string;
-  empName: string;
+  empName: string[];
   description: string;
   status: string;
   startDate: Date;

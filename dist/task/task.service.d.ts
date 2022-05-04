@@ -35,11 +35,11 @@ export declare class TaskService {
         status: string;
         startDate: Date;
         endDate: Date;
-        empName: string;
+        empName: string[];
         workingDays: Date[];
         color: string;
     }>;
-    updateTask(taskId: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, workingDays: Date[], color: string): Promise<void>;
+    updateTask(taskId: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string[], workingDays: Date[], color: string): Promise<void>;
     deleteTask(userId: string, taskId: string): Promise<import("mongoose").Document<unknown, any, User & Document> & User & Document & {
         _id: import("mongoose").Types.ObjectId;
     }>;

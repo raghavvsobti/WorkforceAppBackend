@@ -97,7 +97,7 @@ export class TaskController {
     @Body("startDate") startDate: Date,
     @Body("endDate") endDate: Date,
     @Body("status") status: string,
-    @Body("empName") empName: string,
+    @Body("empName") empName: string[],
     @Body("color") color: string,
     workingDays: Date[]
   ) {

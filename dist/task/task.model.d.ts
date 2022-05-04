@@ -4,7 +4,7 @@ export interface Task extends mongoose.Document {
     id: string;
     color: string;
     name: string;
-    empName: string;
+    empName: string[];
     description: string;
     status: string;
     startDate: Date;

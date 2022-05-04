@@ -24,10 +24,10 @@ export declare class TaskController {
         status: string;
         startDate: Date;
         endDate: Date;
-        empName: string;
+        empName: string[];
         workingDays: Date[];
         color: string;
     }>;
-    updateTask(taskid: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string, color: string, workingDays: Date[]): Promise<any>;
+    updateTask(taskid: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string[], color: string, workingDays: Date[]): Promise<any>;
     removeTask(taskId: string, userId: string): Promise<any>;
 }

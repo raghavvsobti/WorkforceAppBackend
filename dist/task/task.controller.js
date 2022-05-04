@@ -144,7 +144,7 @@ __decorate([
     __param(7, (0, common_4.Body)("color")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, String, Date,
-        Date, String, String, String, Array]),
+        Date, String, Array, String, Array]),
     __metadata("design:returntype", Promise)
 ], TaskController.prototype, "updateTask", null);
 __decorate([

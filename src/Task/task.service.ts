@@ -94,7 +94,7 @@ export class TaskService {
     startDate: Date,
     endDate: Date,
     status: string,
-    empName: string,
+    empName: string[],
     workingDays: Date[],
     color: string
   ) {
