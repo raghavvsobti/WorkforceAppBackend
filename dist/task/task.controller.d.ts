@@ -27,6 +27,7 @@ export declare class TaskController {
         empName: string[];
         workingDays: Date[];
         color: string;
+        user: import("mongoose").Schema.Types.ObjectId;
     }>;
     updateTask(taskid: string, name: string, description: string, startDate: Date, endDate: Date, status: string, empName: string[], color: string, workingDays: Date[]): Promise<any>;
     removeTask(taskId: string, userId: string): Promise<any>;

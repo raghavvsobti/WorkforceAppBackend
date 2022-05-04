@@ -92,6 +92,7 @@ export class TaskService {
       empName: task.empName,
       workingDays: task.workingDays,
       color: task.color,
+      user: task.user,
     };
   }
 
@@ -159,18 +160,13 @@ export class TaskService {
         "populatedUser.tasks"
       );
       await populatedUser?.tasks[index]?.["empName"]?.map(async (item) => {
-        console.log("in here");
         const assignedUserr = await this.userModel.findById(item._id).exec();
-        console.log(assignedUserr, "assignedUserr");
         const indexx = assignedUserr.tasks.indexOf(`${taskId}`);
-        console.log(indexx, "indexx");
         const assignedUserTasks = assignedUserr.tasks;
-        console.log(assignedUserTasks, "assignedUserTasks");
         if (indexx > -1) {
           assignedUserTasks.splice(indexx, 1); // 2nd parameter means remove one item only
         }
         await assignedUserr.save();
-        console.log(assignedUserTasks, "assignedUserTasks");
       });
       usersTask.splice(index, 1); // 2nd parameter means remove one item only
     }

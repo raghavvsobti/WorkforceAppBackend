@@ -105,6 +105,7 @@ let TaskService = class TaskService {
                 empName: task.empName,
                 workingDays: task.workingDays,
                 color: task.color,
+                user: task.user,
             };
         });
     }
@@ -149,18 +150,13 @@ let TaskService = class TaskService {
                 const populatedUser = yield user.populate("tasks");
                 console.log((_a = populatedUser.tasks[index]) === null || _a === void 0 ? void 0 : _a["empName"], "populatedUser.tasks");
                 yield ((_c = (_b = populatedUser === null || populatedUser === void 0 ? void 0 : populatedUser.tasks[index]) === null || _b === void 0 ? void 0 : _b["empName"]) === null || _c === void 0 ? void 0 : _c.map((item) => __awaiter(this, void 0, void 0, function* () {
-                    console.log("in here");
                     const assignedUserr = yield this.userModel.findById(item._id).exec();
-                    console.log(assignedUserr, "assignedUserr");
                     const indexx = assignedUserr.tasks.indexOf(`${taskId}`);
-                    console.log(indexx, "indexx");
                     const assignedUserTasks = assignedUserr.tasks;
-                    console.log(assignedUserTasks, "assignedUserTasks");
                     if (indexx > -1) {
                         assignedUserTasks.splice(indexx, 1);
                     }
                     yield assignedUserr.save();
-                    console.log(assignedUserTasks, "assignedUserTasks");
                 })));
                 usersTask.splice(index, 1);
             }
