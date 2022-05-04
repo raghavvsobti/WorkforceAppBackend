@@ -149,11 +149,29 @@ export class TaskService {
     // if (!result.deletedCount) {
     //   throw new NotFoundException("Could not find task.");
     // }
-
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).exec();
     const usersTask = user.tasks;
     const index = user.tasks.indexOf(`${taskId}`);
     if (index > -1) {
+      const populatedUser = await user.populate("tasks");
+      console.log(
+        populatedUser.tasks[index]?.["empName"],
+        "populatedUser.tasks"
+      );
+      await populatedUser?.tasks[index]?.["empName"]?.map(async (item) => {
+        console.log("in here");
+        const assignedUserr = await this.userModel.findById(item._id).exec();
+        console.log(assignedUserr, "assignedUserr");
+        const indexx = assignedUserr.tasks.indexOf(`${taskId}`);
+        console.log(indexx, "indexx");
+        const assignedUserTasks = assignedUserr.tasks;
+        console.log(assignedUserTasks, "assignedUserTasks");
+        if (indexx > -1) {
+          assignedUserTasks.splice(indexx, 1); // 2nd parameter means remove one item only
+        }
+        await assignedUserr.save();
+        console.log(assignedUserTasks, "assignedUserTasks");
+      });
       usersTask.splice(index, 1); // 2nd parameter means remove one item only
     }
     const result = await this.taskModel.deleteOne({ _id: taskId }).exec();
