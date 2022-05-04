@@ -62,7 +62,6 @@ export class TaskController {
     @Body("userId") userId: string
   ) {
     const workingDays = getDatesInRange(new Date(startDate), new Date(endDate));
-
     const task = await this.taskService.create({
       name: name,
       empName: empName,

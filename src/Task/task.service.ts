@@ -30,12 +30,20 @@ export class TaskService {
 
   async create(data: any) {
     const user = await this.userModel.findById(data.user);
-    console.log("user", user);
-    console.log(data);
     const newTask = new this.taskModel(data);
+    const member = data.empName;
+    await member.map(async (item, index) => {
+      const AssignedMember = await this.userModel.findById(item._id);
+      await AssignedMember.tasks.push(newTask);
+      console.log(AssignedMember.tasks);
+      await AssignedMember.save();
+    });
+    // console.log("member", member);
+    // console.log("user", user);
+    // console.log(data);
     user.tasks.push(newTask);
-    console.log("user", user);
-    console.log(newTask);
+    // console.log("user", user);
+    // console.log(newTask);
     await newTask.save();
     await user.save();
     return newTask;

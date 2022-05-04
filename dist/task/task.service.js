@@ -45,12 +45,15 @@ let TaskService = class TaskService {
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userModel.findById(data.user);
-            console.log("user", user);
-            console.log(data);
             const newTask = new this.taskModel(data);
+            const member = data.empName;
+            yield member.map((item, index) => __awaiter(this, void 0, void 0, function* () {
+                const AssignedMember = yield this.userModel.findById(item._id);
+                yield AssignedMember.tasks.push(newTask);
+                console.log(AssignedMember.tasks);
+                yield AssignedMember.save();
+            }));
             user.tasks.push(newTask);
-            console.log("user", user);
-            console.log(newTask);
             yield newTask.save();
             yield user.save();
             return newTask;
