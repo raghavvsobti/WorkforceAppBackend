@@ -30,13 +30,6 @@ export class NotesService {
     const user = await this.userModel.findById(userId);
     const populatedUser = await user.populate("notes");
     return populatedUser.notes;
-    // const notes = await this.noteModel.find().exec();
-    // return notes.map((note) => ({
-    //   id: note.id,
-    //   title: note.title,
-    //   description: note.description,
-    //   userId: note.user,
-    // }));
   }
 
   async getSingleNote(noteId: string) {

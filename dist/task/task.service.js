@@ -59,18 +59,34 @@ let TaskService = class TaskService {
     getAllTasks(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield this.userModel.findById(userId).exec();
-            const populatedUser = yield user.populate("tasks");
-            return populatedUser.tasks.map((task) => ({
-                id: task._id,
-                name: task === null || task === void 0 ? void 0 : task.name,
-                description: task === null || task === void 0 ? void 0 : task.description,
-                status: task.status,
-                startDate: task.startDate.toLocaleDateString(),
-                endDate: task.endDate.toLocaleDateString(),
-                empName: task.empName,
-                workingDays: task.workingDays,
-                color: task.color,
-            }));
+            if (user.role === "admin") {
+                const tasks = yield this.taskModel.find().exec();
+                return tasks.map((task) => ({
+                    id: task._id,
+                    name: task.name,
+                    description: task.description,
+                    status: task.status,
+                    startDate: task.startDate.toLocaleDateString(),
+                    endDate: task.endDate.toLocaleDateString(),
+                    empName: task.empName,
+                    workingDays: task.workingDays,
+                    color: task.color,
+                }));
+            }
+            else {
+                const populatedUser = yield user.populate("tasks");
+                return populatedUser.tasks.map((task) => ({
+                    id: task._id,
+                    name: task.name,
+                    description: task.description,
+                    status: task.status,
+                    startDate: task.startDate.toLocaleDateString(),
+                    endDate: task.endDate.toLocaleDateString(),
+                    empName: task.empName,
+                    workingDays: task.workingDays,
+                    color: task.color,
+                }));
+            }
         });
     }
     getSingleTask(taskId) {

@@ -43,18 +43,33 @@ export class TaskService {
 
   async getAllTasks(userId: string) {
     const user = await this.userModel.findById(userId).exec();
-    const populatedUser = await user.populate("tasks");
-    return populatedUser.tasks.map((task: any) => ({
-      id: task._id,
-      name: task?.name,
-      description: task?.description,
-      status: task.status,
-      startDate: task.startDate.toLocaleDateString(),
-      endDate: task.endDate.toLocaleDateString(),
-      empName: task.empName,
-      workingDays: task.workingDays,
-      color: task.color,
-    }));
+    if (user.role === "admin") {
+      const tasks = await this.taskModel.find().exec();
+      return tasks.map((task) => ({
+        id: task._id,
+        name: task.name,
+        description: task.description,
+        status: task.status,
+        startDate: task.startDate.toLocaleDateString(),
+        endDate: task.endDate.toLocaleDateString(),
+        empName: task.empName,
+        workingDays: task.workingDays,
+        color: task.color,
+      }));
+    } else {
+      const populatedUser = await user.populate("tasks");
+      return populatedUser.tasks.map((task: any) => ({
+        id: task._id,
+        name: task.name,
+        description: task.description,
+        status: task.status,
+        startDate: task.startDate.toLocaleDateString(),
+        endDate: task.endDate.toLocaleDateString(),
+        empName: task.empName,
+        workingDays: task.workingDays,
+        color: task.color,
+      }));
+    }
   }
 
   async getSingleTask(taskId: string) {
