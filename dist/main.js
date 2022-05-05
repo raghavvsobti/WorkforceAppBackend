@@ -33,7 +33,7 @@ function bootstrap() {
             origin: "http://localhost:3000",
             credentials: true,
         });
-        yield app.listen(8000);
+        yield app.listen(process.env.PORT || 8000);
     });
 }
 bootstrap();
