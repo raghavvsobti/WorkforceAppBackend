@@ -17,8 +17,3 @@ export interface Note extends mongoose.Document {
   user: mongoose.Schema.Types.ObjectId;
 }
 
-// NoteSchema.post("deleteOne", async function (note) {
-//   if (note.user.length > 0) {
-//     const res = await User.deleteMany({});
-//   }
-// });
